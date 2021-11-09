@@ -25,6 +25,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/crypto/bcrypt"
 
+	lru "github.com/hashicorp/golang-lru"
+
 	"github.com/dexidp/dex/connector"
 	"github.com/dexidp/dex/connector/atlassiancrowd"
 	"github.com/dexidp/dex/connector/authproxy"
@@ -181,6 +183,9 @@ type Server struct {
 	refreshTokenPolicy *RefreshTokenPolicy
 
 	logger log.Logger
+
+	// LRU cache of regex matchers for a given permitted redirect URI defined in Client
+	wildcardMatcherCache *lru.ARCCache
 }
 
 // NewServer constructs a server from the provided config.
@@ -254,6 +259,11 @@ func newServer(ctx context.Context, c Config, rotationStrategy rotationStrategy)
 		now = time.Now
 	}
 
+	arcCache, err := lru.NewARC(500)
+	if err != nil {
+		c.Logger.Infof("ARC LRU case failed to load, wildcard redirect URIs disabled: %v", err)
+	}
+
 	s := &Server{
 		issuerURL:              *issuerURL,
 		connectors:             make(map[string]Connector),
@@ -270,6 +280,7 @@ func newServer(ctx context.Context, c Config, rotationStrategy rotationStrategy)
 		templates:              tmpls,
 		passwordConnector:      c.PasswordConnector,
 		logger:                 c.Logger,
+		wildcardMatcherCache:   arcCache,
 	}
 
 	// Retrieves connector objects in backend storage. This list includes the static connectors
