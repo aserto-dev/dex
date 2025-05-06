@@ -89,7 +89,7 @@ type Config struct {
 	DeviceRequestsValidFor time.Duration // Defaults to 5 minutes
 
 	// If true, disable browser caching of signing keys.
-	SigningKeyNoStore bool
+	SigningKeysNoStore bool
 
 	// Refresh token expiration settings
 	RefreshTokenPolicy *RefreshTokenPolicy
@@ -183,7 +183,7 @@ type Server struct {
 	authRequestsValidFor   time.Duration
 	deviceRequestsValidFor time.Duration
 
-	signingKeyNoStore bool
+	signingKeysNoStore bool
 
 	refreshTokenPolicy *RefreshTokenPolicy
 
@@ -278,7 +278,7 @@ func newServer(ctx context.Context, c Config, rotationStrategy rotationStrategy)
 		idTokensValidFor:       value(c.IDTokensValidFor, 24*time.Hour),
 		authRequestsValidFor:   value(c.AuthRequestsValidFor, 24*time.Hour),
 		deviceRequestsValidFor: value(c.DeviceRequestsValidFor, 5*time.Minute),
-		signingKeyNoStore:      c.SigningKeyNoStore,
+		signingKeysNoStore:     c.SigningKeysNoStore,
 		refreshTokenPolicy:     c.RefreshTokenPolicy,
 		skipApproval:           c.SkipApprovalScreen,
 		alwaysShowLogin:        c.AlwaysShowLoginScreen,
