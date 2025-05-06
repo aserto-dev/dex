@@ -271,7 +271,6 @@ func runServe(options serveOptions) error {
 		Now:                    now,
 		PrometheusRegistry:     prometheusRegistry,
 		HealthChecker:          healthChecker,
-		SigningKeyNoStore:      c.Expiry.SigningKeysNoStore,
 	}
 	if c.Expiry.SigningKeys != "" {
 		signingKeys, err := time.ParseDuration(c.Expiry.SigningKeys)
@@ -280,6 +279,10 @@ func runServe(options serveOptions) error {
 		}
 		logger.Infof("config signing keys expire after: %v", signingKeys)
 		serverConfig.RotateKeysAfter = signingKeys
+	}
+	if c.Expiry.SigningKeysNoStore {
+		logger.Info("config signing keys no-store: true")
+		serverConfig.SigningKeysNoStore = true
 	}
 	if c.Expiry.IDTokens != "" {
 		idTokens, err := time.ParseDuration(c.Expiry.IDTokens)

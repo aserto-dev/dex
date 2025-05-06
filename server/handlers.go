@@ -63,7 +63,7 @@ func (s *Server) handlePublicKeys(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cacheControl := fmt.Sprintf("max-age=%d, must-revalidate", int(maxAge.Seconds()))
-	if s.signingKeyNoStore {
+	if s.signingKeysNoStore {
 		cacheControl = "no-store"
 	}
 
