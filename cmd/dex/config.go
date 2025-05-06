@@ -320,6 +320,9 @@ type Expiry struct {
 	// SigningKeys defines the duration of time after which the SigningKeys will be rotated.
 	SigningKeys string `json:"signingKeys"`
 
+	// SigningKeysNoStore disables browser caching of signing key reponses.
+	SigningKeysNoStore bool `json:"signingKeysNoStore"`
+
 	// IdTokens defines the duration of time for which the IdTokens will be valid.
 	IDTokens string `json:"idTokens"`
 

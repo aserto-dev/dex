@@ -116,6 +116,7 @@ staticPasswords:
 
 expiry:
   signingKeys: "7h"
+  signingKeysNoStore: true
   idTokens: "25h"
   authRequests: "25h"
   deviceRequests: "10m"
@@ -197,10 +198,11 @@ logger:
 			},
 		},
 		Expiry: Expiry{
-			SigningKeys:    "7h",
-			IDTokens:       "25h",
-			AuthRequests:   "25h",
-			DeviceRequests: "10m",
+			SigningKeys:        "7h",
+			SigningKeysNoStore: true,
+			IDTokens:           "25h",
+			AuthRequests:       "25h",
+			DeviceRequests:     "10m",
 		},
 		Logger: Logger{
 			Level:  "debug",
